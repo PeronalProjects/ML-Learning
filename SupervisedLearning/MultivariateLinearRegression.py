@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math, copy
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import SGDRegressor
+from sklearn.preprocessing import StandardScaler
 
 
 x_train = np.array([1.0, 2.0])           #(size in 1000 square feet)
@@ -95,6 +97,7 @@ y = np.array([460, 232, 178])
 def predict(input):
     m,n = x.shape
     (w, b) = gradient_descent(x_scaled, y, np.zeros(n), 0.0, 0.02, 10000)
+    print(f"model parameters :   w : {w}, b: {b}")
     y_hat = np.dot(input/np.max(x, axis=0), w)+b
     return y_hat
 
@@ -104,7 +107,21 @@ print(predict(x[0, :]))
 reg = LinearRegression().fit(x, y)
 print(reg.predict(x[0, :].reshape(1,-1)))
 
+"""
+Using scaling gradient descent regression library
+"""
 
+scaler = StandardScaler()
+X_Norm = scaler.fit_transform(x)
+sgdr = SGDRegressor(max_iter=10000)
+sgdr.fit(X_Norm, y)
+print(sgdr)
+print(f"number of iterations completed: {sgdr.n_iter_}, number of weight updates: {sgdr.t_}")
+b_norm = sgdr.intercept_
+w_norm = sgdr.coef_
+print(f"model parameters:                   w: {w_norm}, b:{b_norm}")
+y_pred_sgd = sgdr.predict(X_Norm)
+print(f"prediction using sgdr.predict match: { y_pred_sgd}")
 
 
 
