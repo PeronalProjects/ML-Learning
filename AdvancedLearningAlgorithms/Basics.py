@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import keras
+import sympy
 # from tensorflow.keras.layers import Dense, Input
 # from tensorflow.keras import Sequential
 # from tensorflow.keras.losses import MeanSquaredError, BinaryCrossentropy
@@ -111,3 +112,15 @@ g_x = tape.gradient(y, x)  # g(x) = dy/dx
 
 print(f(x))
 print(g_x)
+
+
+'''
+Derivatives in python
+'''
+J,w = sympy.symbols('J,w')
+J=(w**3)+(w**2)+w
+print(J)
+der = sympy.diff(J,w)
+print(der)
+ans = der.subs([(w,2)])
+print(ans)
